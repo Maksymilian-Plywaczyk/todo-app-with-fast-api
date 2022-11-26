@@ -1,18 +1,16 @@
 # TODO make a singup page
-from fastapi import FastAPI, status, HTTPException, APIRouter
-from app.schemas.user import User, UserCreate
+from fastapi import status, HTTPException, APIRouter, Depends
+from schemas.user import User, UserCreate
 
 from sqlalchemy.orm import Session
-from core.security import get_hashed_password
 from crud.user import get_user_by_email, create_new_user
-from uuid import uuid4
+from dependencies import get_db
+
 router = APIRouter()
 
 
-router.post("/singup/", summary="Create new user", response_model=User)
-
-
-async def create_user(user: UserCreate, db: Session):
+@router.post("/singup/", summary="Create new user", response_model=User)
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
     # querying database to check if user already exist
     database_user = get_user_by_email(db=db, user_email=user.email)
     if database_user is not None:
