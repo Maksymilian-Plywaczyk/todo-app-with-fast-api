@@ -3,6 +3,9 @@ import os
 from typing import Union
 from datetime import datetime, timedelta
 from jose import jwt
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 # get secret key from environment variables should be kept secret
 SECRET_KEY = os.getenv('SECRET_KEY')
