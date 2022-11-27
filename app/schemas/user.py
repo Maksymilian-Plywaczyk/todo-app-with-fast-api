@@ -1,14 +1,11 @@
-from typing import List, Optional
-
 from pydantic import BaseModel, EmailStr
+from typing import List, Optional
 
 
 # Shared properties
 class UserBase(BaseModel):
-    id: int
-    full_name: Optional[str] = None
+    full_name: Optional[str]
     email: EmailStr
-    is_active: Optional[None] = None
 
 
 # Properites to receive via API on update
@@ -23,8 +20,8 @@ class UserInDB(UserBase):
         orm_mode = True
 
 
-class User(UserBase):
-    #items: List[Item] = []
-
-    class Config:
-        orm_mode = True
+class User(UserInDB):
+    id: int
+    is_active: bool
+    # items: List[Item] = []
+    pass
