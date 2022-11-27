@@ -16,5 +16,5 @@ def create_new_user(db: Session, user: UserCreate):
         full_name=user.full_name, email=user.email, hashed_password=hashed_password)
     db.add(database_user)
     db.commit()
-    db.refresh()
+    db.refresh(database_user)
     return database_user
