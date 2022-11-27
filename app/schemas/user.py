@@ -21,7 +21,6 @@ class UserInDB(UserBase):
 
 
 class User(UserInDB):
-    id: int
+    user_id: int
     is_active: bool
     # items: List[Item] = []
-    pass
