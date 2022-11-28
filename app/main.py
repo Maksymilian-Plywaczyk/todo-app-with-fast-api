@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from routers import singup, login
+import routers.user
 from models import user
 from db.database import engine
 
@@ -8,8 +9,4 @@ app = FastAPI()
 
 app.include_router(singup.router)
 app.include_router(login.router)
-
-
-@app.get("/")
-async def root():
-    return {"message": "Hello Bigger Applications!"}
+app.include_router(routers.user.router)
