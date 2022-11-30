@@ -18,3 +18,12 @@ def create_new_user(db: Session, user: UserCreate):
     db.commit()
     db.refresh(database_user)
     return database_user
+
+
+def delete_user(db: Session, user_email: str):
+    deleted_user = db.query(models.user.User).filter(
+        models.user.User.email == user_email).first()
+    db.delete(deleted_user)
+    db.commit()
+    db.close()
+    return deleted_user
