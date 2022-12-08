@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
-
+from schemas.tasks import Task
 
 # Shared properties
 class UserBase(BaseModel):
@@ -13,6 +13,7 @@ class UserCreate(UserBase):
     password: str
 
 
+
 class UserInDB(UserBase):
     hashed_password: str
 
@@ -23,4 +24,4 @@ class UserInDB(UserBase):
 class User(UserInDB):
     user_id: int
     is_active: bool
-    # items: List[Item] = []
+    items: List[Task] = []
