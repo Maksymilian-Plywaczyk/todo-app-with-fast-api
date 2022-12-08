@@ -7,9 +7,9 @@ from fastapi.security import OAuth2PasswordBearer
 from core.security import SECRET_KEY, ALGORITH
 from jose import jwt
 from pydantic import ValidationError
-from schemas.user import UserCreate
+from schemas.users import UserCreate
 from schemas.token import TokenPayload
-from crud.user import get_user_by_email
+from crud.users import get_user_by_email
 
 
 def get_db() -> Generator:

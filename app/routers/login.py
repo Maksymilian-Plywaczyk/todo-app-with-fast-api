@@ -3,7 +3,7 @@ from schemas.token import Token
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordRequestForm
 from dependencies import get_db
-from crud.user import get_user_by_email
+from crud.users import get_user_by_email
 from core.security import verify_password, create_access_token
 router = APIRouter()
 

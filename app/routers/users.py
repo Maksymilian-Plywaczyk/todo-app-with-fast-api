@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from dependencies import get_current_user, get_db
-from schemas.user import User, UserCreate
+from schemas.users import User, UserCreate
 from sqlalchemy.orm import Session
 from crud.users import delete_user, get_user_by_email
 router = APIRouter()

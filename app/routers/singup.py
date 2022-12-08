@@ -1,9 +1,9 @@
 # TODO make a singup page
 from fastapi import status, HTTPException, APIRouter, Depends
-from schemas.user import User, UserCreate
+from schemas.users import User, UserCreate
 
 from sqlalchemy.orm import Session
-from crud.user import get_user_by_email, create_new_user
+from crud.users import get_user_by_email, create_new_user
 from dependencies import get_db
 
 router = APIRouter()
