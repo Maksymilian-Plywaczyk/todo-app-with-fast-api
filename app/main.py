@@ -1,10 +1,11 @@
 from fastapi import FastAPI
 from routers import singup, login
 import routers.users
-from models import users
+from models import users, tasks
 from db.database import engine
 
 users.database.Base.metadata.create_all(bind=engine)
+tasks.database.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 app.include_router(singup.router)
