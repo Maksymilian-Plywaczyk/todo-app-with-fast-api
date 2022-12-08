@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Boolean, Integer, String
-
+from sqlalchemy.orm import relationship
 from db import database
 
 
@@ -11,3 +11,5 @@ class User(database.Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+
+    items = relationship("Tasks", back_populates="owner")
