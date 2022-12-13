@@ -15,6 +15,7 @@ def create_task(db: Session, newTask: TaskCreate, user_id: int):
     db.add(database_task)
     db.commit()
     db.refresh(database_task)
+    return database_task
 
 
 # Delete specific task for selected user
@@ -23,18 +24,17 @@ def delete_task(db: Session, task_id: int):
     db.delete(deleted_task)
     db.commit()
     db.refresh(deleted_task)
+    return deleted_task
 
 
 # Update specific task for selected user
-def update_task(db: Session, task_update: TaskUpdate, task_in: Task, task_id: int):
-    updated_task = jsonable_encoder(task_update)
-    if isinstance(task_in, dict):
-        update_task = task_in
-    else:
-        update_task = task_in.dict(exclude_unset=True)
-    for field in updated_task:
-        if field in update_task:
-            setattr(task_update, field, update_task[field])
+def update_task(db: Session, task_update: TaskUpdate, task_id: int):
+    task_in = db.get(models.tasks.Task, task_id)
+    updated_task = task_update.dict(exclude_unset=True)
+    for key, value in updated_task.items():
+        if key in update_task:
+            setattr(task_in, key, value)
     db.add(task_update)
     db.commit()
     db.refresh(task_update)
+    return task_in
