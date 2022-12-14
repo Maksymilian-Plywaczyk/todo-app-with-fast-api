@@ -10,6 +10,10 @@ def get_user_by_email(db: Session, user_email: str):
     return user_by_email
 
 
+def get_user_list(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.users.User).offset(skip).limit(limit).all()
+
+
 def create_new_user(db: Session, user: UserCreate):
     hashed_password = get_hashed_password(plain_password=user.password)
     database_user = models.users.User(

@@ -2,13 +2,20 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from dependencies import get_current_user, get_db
 from schemas.users import User, UserCreate
 from sqlalchemy.orm import Session
-from crud.users import delete_user, get_user_by_email
+from crud.users import delete_user, get_user_by_email, get_user_list
+from typing import List
+
 router = APIRouter()
 
 
 @router.get("/me", summary="Get details of currently logged in user", response_model=User)
 def get_me(current_user: User = Depends(get_current_user)):
     return current_user
+
+
+@router.get("/users", summary="Get all users in database", response_model=List[User])
+def get_users(db: Session = Depends(get_db), skip: int = 0, limit: int = 0):
+    return get_user_list(db=db, skip=skip, limit=limit)
 
 
 @router.delete("/delete_user", summary="Delete user from database")
