@@ -5,11 +5,11 @@ from schemas.users import User, UserCreate
 from sqlalchemy.orm import Session
 from crud.users import get_user_by_email, create_new_user
 from dependencies import get_db
-
+from routers.tags import Tags
 router = APIRouter()
 
 
-@router.post("/singup/", summary="Create new user", response_model=User)
+@router.post("/singup/", summary="Create new user", response_model=User,tags=[Tags.register])
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     # querying database to check if user already exist
     database_user = get_user_by_email(db=db, user_email=user.email)

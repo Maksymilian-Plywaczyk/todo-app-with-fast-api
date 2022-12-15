@@ -5,10 +5,12 @@ from fastapi.security import OAuth2PasswordRequestForm
 from dependencies import get_db
 from crud.users import get_user_by_email
 from core.security import verify_password, create_access_token
+from routers.tags import Tags
+
 router = APIRouter()
 
 
-@router.post("/login/", summary="Create access token for user", response_model=Token)
+@router.post("/login/", summary="Create access token for user", response_model=Token, tags=[Tags.login])
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
     user = get_user_by_email(db=db, user_email=form_data.username)
 
