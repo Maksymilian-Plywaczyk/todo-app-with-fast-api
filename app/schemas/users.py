@@ -24,4 +24,4 @@ class UserInDB(UserBase):
 class User(UserInDB):
     user_id: int
     is_active: bool
-    items: List[Task] = Field(default=[], description="User's tasks")
+    tasks: List[Task] = Field(default=[], description="User's tasks")

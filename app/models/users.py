@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Boolean, Integer, String
 from sqlalchemy.orm import relationship
 from db import database
-from models.tasks import Task
 
 
 class User(database.Base):
