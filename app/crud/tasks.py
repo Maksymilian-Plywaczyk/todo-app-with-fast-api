@@ -11,7 +11,7 @@ def get_tasks_list(db: Session, skip: int = 0, limit: int = 100):
 
 # Create new task for selected user
 def create_task(db: Session, newTask: TaskCreate, user_id: int):
-    database_task = models.tasks.Task(**newTask.dict(), owner=user_id)
+    database_task = models.tasks.Task(**newTask.dict(), user_id=user_id)
     db.add(database_task)
     db.commit()
     db.refresh(database_task)
