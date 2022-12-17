@@ -5,14 +5,14 @@ from typing import Union
 from datetime import date
 
 
-def get_time() -> datetime.datetime:
-    return datetime.datetime.now()
+def get_time() -> date:
+    return date.today()
 
 
 # Shared properties to Task schemas
 class BaseTask(BaseModel):
     task_title: str
-    description: Union[str, None] = Field(default=None,
+    task_description: Union[str, None] = Field(default=None,
                                           description="Task description must be less than 300 characters.",
                                           max_length=300)
     task_piority: Union[int, None] = Field(default=None, ge=0, le=4, description="Task piority choose 1-4")
