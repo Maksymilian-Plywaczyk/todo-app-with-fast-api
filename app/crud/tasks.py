@@ -9,6 +9,12 @@ def get_tasks_list(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.tasks.Task).offset(skip).limit(limit).all()
 
 
+# get task by task id
+def get_task_by_id(db: Session, task_id: int):
+    task = db.query(models.tasks.Task).filter(models.tasks.Task.id == task_id).first()
+    return task
+
+
 # Create new task for selected user
 def create_task(db: Session, newTask: TaskCreate, user_id: int):
     database_task = models.tasks.Task(**newTask.dict(), user_id=user_id)
