@@ -1,7 +1,7 @@
 from typing import List
 
 from crud.tasks import delete_task, get_task_by_id, get_tasks_list
-from crud.users import get_user_by_email
+from crud.users import get_user_by_id
 from dependencies import get_db
 from fastapi import APIRouter, Depends, HTTPException, status
 from routers.tags import Tags
@@ -15,15 +15,15 @@ router = APIRouter()
 
 
 @router.get(
-    "/tasks/{user_email}",
+    "/tasks/{user_id}",
     summary="Get all tasks from current user",
     response_model=List[Task],
     tags=[Tags.tasks],
 )
 def read_user_tasks(
-    user_email: str, db: Session = Depends(get_db), skip: int = 0, limit: int = 100
+    user_id: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100
 ):
-    user = get_user_by_email(db=db, user_email=user_email)
+    user = get_user_by_id(db=db, user_id=user_id)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"

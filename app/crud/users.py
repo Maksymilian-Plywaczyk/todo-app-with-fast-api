@@ -13,6 +13,14 @@ def get_user_by_email(db: Session, user_email: str):
     return user_by_email
 
 
+def get_user_by_id(db: Session, user_id: int):
+    user_by_id = (
+        db.query(models.users.User).filter(models.users.User.user_id == user_id).first()
+    )
+
+    return user_by_id
+
+
 def get_user_list(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.users.User).offset(skip).limit(limit).all()
 
