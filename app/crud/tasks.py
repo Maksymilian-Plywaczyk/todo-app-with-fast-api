@@ -1,7 +1,7 @@
-from sqlalchemy.orm import Session
 import models.tasks
-from schemas.tasks import TaskCreate, Task, TaskUpdate
 from fastapi.encoders import jsonable_encoder
+from schemas.tasks import Task, TaskCreate, TaskUpdate
+from sqlalchemy.orm import Session
 
 
 # get list of tasks for selected user
@@ -26,7 +26,9 @@ def create_task(db: Session, newTask: TaskCreate, user_id: int):
 
 # Delete specific task for selected user
 def delete_task(db: Session, task_id: int):
-    deleted_task = db.query(models.tasks.Task).filter(models.tasks.Task.id == task_id).first()
+    deleted_task = (
+        db.query(models.tasks.Task).filter(models.tasks.Task.id == task_id).first()
+    )
     db.delete(deleted_task)
     db.commit()
     db.refresh(deleted_task)

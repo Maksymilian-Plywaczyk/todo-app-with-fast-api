@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Boolean, Integer, String, Date, ForeignKey
-from sqlalchemy.orm import relationship
-from db import database
 import datetime
+
+from db import database
+from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
 
 
 def get_time() -> datetime.datetime:

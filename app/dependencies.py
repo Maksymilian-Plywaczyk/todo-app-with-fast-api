@@ -1,15 +1,16 @@
-from typing import Generator, Union
-from db.database import SessionLocal
 from datetime import datetime
+from typing import Generator, Union
+
+from core.security import ALGORITH, SECRET_KEY
+from crud.users import get_user_by_email
+from db.database import SessionLocal
 from fastapi import Depends, HTTPException, status
-from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
-from core.security import SECRET_KEY, ALGORITH
 from jose import jwt
 from pydantic import ValidationError
-from schemas.users import UserCreate
 from schemas.token import TokenPayload
-from crud.users import get_user_by_email
+from schemas.users import UserCreate
+from sqlalchemy.orm import Session
 
 
 def get_db() -> Generator:
@@ -23,7 +24,9 @@ def get_db() -> Generator:
 reuseable_oauth = OAuth2PasswordBearer(tokenUrl="/login")
 
 
-def get_current_user(token: str = Depends(reuseable_oauth), db: Session = Depends(get_db)):
+def get_current_user(
+    token: str = Depends(reuseable_oauth), db: Session = Depends(get_db)
+):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITH])
         token_data = TokenPayload(**payload)
