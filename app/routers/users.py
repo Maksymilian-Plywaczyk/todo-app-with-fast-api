@@ -4,7 +4,7 @@ from crud.tasks import create_task
 from crud.users import delete_user, get_user_by_email, get_user_list
 from dependencies import get_current_user, get_db
 from fastapi import APIRouter, Depends, HTTPException, status
-from routers.tags import Tags
+from routers.utils.tags import Tags
 from schemas.tasks import Task, TaskCreate
 from schemas.users import User, UserCreate
 from sqlalchemy.orm import Session

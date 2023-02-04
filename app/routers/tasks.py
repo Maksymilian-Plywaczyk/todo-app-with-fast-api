@@ -4,7 +4,7 @@ from crud.tasks import delete_task, get_task_by_id, get_tasks_list
 from crud.users import get_user_by_id
 from dependencies import get_db
 from fastapi import APIRouter, Depends, HTTPException, status
-from routers.tags import Tags
+from routers.utils.tags import Tags
 from schemas.tasks import Task
 from sqlalchemy.orm import Session
 
