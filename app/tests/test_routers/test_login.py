@@ -7,6 +7,7 @@ from fastapi.testclient import TestClient
 dotenv.load_dotenv(dotenv.find_dotenv())
 
 
+# TODO add tests using database
 @pytest.mark.unit
 def test_login(client: TestClient) -> None:
     # headers = {"Content-Type": "x-www-form-urlencoded"}

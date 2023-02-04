@@ -2,7 +2,7 @@
 from crud.users import create_new_user, get_user_by_email
 from dependencies import get_db
 from fastapi import APIRouter, Depends, HTTPException, status
-from routers.tags import Tags
+from routers.utils.tags import Tags
 from schemas.users import User, UserCreate
 from sqlalchemy.orm import Session
 

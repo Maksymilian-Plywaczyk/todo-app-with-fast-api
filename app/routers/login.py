@@ -3,7 +3,7 @@ from crud.users import get_user_by_email
 from dependencies import get_db
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from routers.tags import Tags
+from routers.utils.tags import Tags
 from schemas.token import Token
 from sqlalchemy.orm import Session
 
