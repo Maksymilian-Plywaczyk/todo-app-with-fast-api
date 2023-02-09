@@ -1,11 +1,13 @@
 import os
 
 import pytest
+from db.database import Base
 from dotenv import find_dotenv, load_dotenv
 from fastapi.testclient import TestClient
 from models import users
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import Session
+from sqlalchemy_utils import create_database, database_exists
 
 from app.dependencies import get_db
 from app.main import app
@@ -13,36 +15,39 @@ from app.main import app
 load_dotenv(find_dotenv())
 
 # TODO Configurate for database tests
-
-engine = create_engine(
-    os.getenv("SQLALCHEMY_DATABASE_TEST_URL"), connect_args={"check_same_thread": False}
-)
-TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-users.database.Base.metadata.create_all(bind=engine)
+SQLALCHEMY_DATABASE_TEST_URL = os.getenv("SQLALCHEMY_DATABASE_TEST_URL")
 
 
-@pytest.fixture(scope="module")
-def db():
-    connection = engine.connect()
-    #   transaction = connection.begin()
+# create database with new engine
 
-    # bind an individual Session to the connection
-    db = TestingSessionLocal(bind=connection)
-    # db = Session(db_engine)
+
+@pytest.fixture(scope="session")
+def db_engine():
+    engine = create_engine(
+        SQLALCHEMY_DATABASE_TEST_URL, connect_args={"check_same_thread": False}
+    )
+    if not database_exists:
+        create_database(engine.url)
+    Base.metadata.create_all(bind=engine)
+    yield engine
+
+
+@pytest.fixture(scope="function")
+def override_get_db(db_engine):
+    connection = db_engine.connect()
+
+    transaction = connection.begin()
+
+    db = Session(bind=connection)
 
     yield db
-
-    db.rollback()
+    db.close()
+    transaction.rollback()
     connection.close()
 
 
-#
-@pytest.fixture(scope="module")
-def client(db):
-    def override_get_db():
-        yield db
-
-    app.dependency_overrides[get_db] = override_get_db
-
+@pytest.fixture(scope="function")
+def client(override_get_db):
+    app.dependency_overrides[get_db] = lambda: override_get_db
     with TestClient(app) as c:
         yield c
