@@ -1,23 +1,22 @@
-import models.tasks
-from fastapi.encoders import jsonable_encoder
-from schemas.tasks import Task, TaskCreate, TaskUpdate
+from models.models import Task
+from schemas.tasks import TaskCreate, TaskUpdate
 from sqlalchemy.orm import Session
 
 
 # get list of tasks for selected user
 def get_tasks_list(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.tasks.Task).offset(skip).limit(limit).all()
+    return db.query(Task).offset(skip).limit(limit).all()
 
 
 # get task by task id
 def get_task_by_id(db: Session, task_id: int):
-    task = db.query(models.tasks.Task).filter(models.tasks.Task.id == task_id).first()
+    task = db.query(Task).filter(Task.id == task_id).first()
     return task
 
 
 # Create new task for selected user
 def create_task(db: Session, newTask: TaskCreate, user_id: int):
-    database_task = models.tasks.Task(**newTask.dict(), user_id=user_id)
+    database_task = Task(**newTask.dict(), user_id=user_id)
     db.add(database_task)
     db.commit()
     db.refresh(database_task)
@@ -26,9 +25,7 @@ def create_task(db: Session, newTask: TaskCreate, user_id: int):
 
 # Delete specific task for selected user
 def delete_task(db: Session, task_id: int):
-    deleted_task = (
-        db.query(models.tasks.Task).filter(models.tasks.Task.id == task_id).first()
-    )
+    deleted_task = db.query(Task).filter(Task.id == task_id).first()
     db.delete(deleted_task)
     db.commit()
     db.refresh(deleted_task)
@@ -37,7 +34,7 @@ def delete_task(db: Session, task_id: int):
 
 # Update specific task for selected user
 def update_task(db: Session, task_update: TaskUpdate, task_id: int):
-    task_in = db.get(models.tasks.Task, task_id)
+    task_in = db.get(Task, task_id)
     updated_task = task_update.dict(exclude_unset=True)
     for key, value in updated_task.items():
         if key in update_task:
