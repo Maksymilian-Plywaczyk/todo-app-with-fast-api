@@ -16,6 +16,10 @@ load_dotenv(find_dotenv())
 SQLALCHEMY_DATABASE_TEST_URL = os.getenv("SQLALCHEMY_DATABASE_TEST_URL")
 
 
+def create_test_tables(engine):
+    Base.metadata.create_all(bind=engine)
+
+
 @pytest.fixture(scope="session")
 def db_engine():
     engine = create_engine(
@@ -23,14 +27,12 @@ def db_engine():
         connect_args={"check_same_thread": False},
     )
 
-    Base.metadata.create_all(bind=engine)
+    create_test_tables(engine)
 
     yield engine
 
-    Base.metadata.drop_all(bind=engine)
 
-
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def db_session(db_engine):
     connection = db_engine.connect()
     transaction = connection.begin()
@@ -44,12 +46,12 @@ def db_session(db_engine):
     connection.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def override_get_db(db_session):
     yield db_session
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture()
 def client(override_get_db):
     app.dependency_overrides[get_db] = override_get_db
     with TestClient(app) as c:

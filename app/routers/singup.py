@@ -10,7 +10,7 @@ router = APIRouter()
 
 
 @router.post(
-    "/singup/", summary="Create new user", response_model=User, tags=[Tags.register]
+    "/signup/", summary="Create new user", response_model=User, tags=[Tags.register]
 )
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     # querying database to check if user already exist
