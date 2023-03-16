@@ -4,13 +4,11 @@ import pytest
 from db.database import Base
 from dotenv import find_dotenv, load_dotenv
 from fastapi.testclient import TestClient
-from models import users
+from main import app
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
-from sqlalchemy_utils import create_database, database_exists
 
 from app.dependencies import get_db
-from app.main import app
 
 load_dotenv(find_dotenv())
 
@@ -18,36 +16,41 @@ load_dotenv(find_dotenv())
 SQLALCHEMY_DATABASE_TEST_URL = os.getenv("SQLALCHEMY_DATABASE_TEST_URL")
 
 
-# create database with new engine
-
-
 @pytest.fixture(scope="session")
 def db_engine():
     engine = create_engine(
-        SQLALCHEMY_DATABASE_TEST_URL, connect_args={"check_same_thread": False}
+        SQLALCHEMY_DATABASE_TEST_URL,
+        connect_args={"check_same_thread": False},
     )
-    if not database_exists:
-        create_database(engine.url)
+
     Base.metadata.create_all(bind=engine)
+
     yield engine
+
+    Base.metadata.drop_all(bind=engine)
 
 
 @pytest.fixture(scope="function")
-def override_get_db(db_engine):
+def db_session(db_engine):
     connection = db_engine.connect()
-
     transaction = connection.begin()
 
-    db = Session(bind=connection)
+    session = Session(bind=connection)
 
-    yield db
-    db.close()
+    yield session
+
+    session.close()
     transaction.rollback()
     connection.close()
 
 
 @pytest.fixture(scope="function")
+def override_get_db(db_session):
+    yield db_session
+
+
+@pytest.fixture(scope="function")
 def client(override_get_db):
-    app.dependency_overrides[get_db] = lambda: override_get_db
+    app.dependency_overrides[get_db] = override_get_db
     with TestClient(app) as c:
         yield c
