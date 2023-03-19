@@ -32,7 +32,7 @@ def db_engine():
     yield engine
 
 
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def db_session(db_engine):
     connection = db_engine.connect()
     transaction = connection.begin()
@@ -46,7 +46,7 @@ def db_session(db_engine):
     connection.close()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="function")
 def override_get_db(db_session):
     yield db_session
 
