@@ -1,7 +1,7 @@
 from typing import List
 
 from crud.tasks import create_task
-from crud.users import delete_user, get_user_by_email, get_user_list
+from crud.users import delete_user, get_user_by_id, get_user_list
 from dependencies import get_current_user, get_db
 from fastapi import APIRouter, Depends, HTTPException, status
 from routers.utils.tags import Tags
@@ -43,15 +43,15 @@ def create_new_task(user_id: int, new_task: TaskCreate, db: Session = Depends(ge
     return task
 
 
-@router.delete("/delete_user", summary="Delete user from database", tags=[Tags.users])
-def delete_specific_user(
-    user: UserCreate = Depends(get_current_user), db: Session = Depends(get_db)
-):
-    deleted_user = get_user_by_email(db=db, user_email=user.email)
+@router.delete(
+    "/delete_user/{user_id}", summary="Delete user from database", tags=[Tags.users]
+)
+def delete_specific_user(user_id: int, db: Session = Depends(get_db)):
+    deleted_user = get_user_by_id(db=db, user_id=user_id)
     if deleted_user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Not found user to delete"
         )
     else:
-        deleted_user = delete_user(db=db, user_email=user.email)
+        deleted_user = delete_user(db=db, user_id=deleted_user.user_id)
     return {"User deleted": deleted_user}
