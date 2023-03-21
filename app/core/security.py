@@ -54,6 +54,6 @@ def generate_reset_password_token(email: str) -> str:
 def verify_reset_password_token(token: str) -> Optional[str]:
     try:
         decoded_token = jwt.decode(token, key=SECRET_KEY, algorithms=[ALGORITH])
-        return decoded_token["email"]
+        return decoded_token["subject"]
     except jwt.JWTError:
         return None

@@ -39,10 +39,10 @@ def login(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect email or password",
         )
-    return {"access_token": create_access_token(user.email), "token_type": "bearer"}
+    return {"email": create_access_token(user.email), "token_type": "bearer"}
 
 
-@router.post("/reset-password/", response_model=Msg, tags=[Tags.reset_password])
+@router.post("/reset-password/", tags=[Tags.reset_password])
 def reset_user_password(
     token: str = Body(...), new_password: str = Body(...), db: Session = Depends(get_db)
 ):
