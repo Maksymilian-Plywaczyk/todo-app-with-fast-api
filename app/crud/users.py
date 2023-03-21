@@ -36,3 +36,7 @@ def delete_user(db: Session, user_id: int):
     db.commit()
     db.close()
     return deleted_user
+
+
+def user_is_active(user: User):
+    return user.is_active

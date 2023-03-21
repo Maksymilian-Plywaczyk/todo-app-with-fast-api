@@ -1,6 +1,6 @@
 import os
 from datetime import datetime, timedelta
-from typing import Union
+from typing import Optional, Union
 
 from dotenv import find_dotenv, load_dotenv
 from jose import jwt
@@ -14,7 +14,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITH = "HS256"
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
-
 
 password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -40,3 +39,21 @@ def create_access_token(subject: Union[str, any], expires_delta: int = None) -> 
     to_encode = {"exp": expires_delta, "subject": str(subject)}
     encoded_jwt = jwt.encode(claims=to_encode, key=SECRET_KEY, algorithm=ALGORITH)
     return encoded_jwt
+
+
+def generate_reset_password_token(email: str) -> str:
+    delta = timedelta(hours=ACCESS_TOKEN_EXPIRE_MINUTES)
+    now = datetime.utcnow()
+    expires = delta + now
+    exp = expires.timestamp()
+    to_encode = {"exp": exp, "subject": email}
+    encoded_jwt = jwt.encode(claims=to_encode, key=SECRET_KEY, algorithm=ALGORITH)
+    return encoded_jwt
+
+
+def verify_reset_password_token(token: str) -> Optional[str]:
+    try:
+        decoded_token = jwt.decode(token, key=SECRET_KEY, algorithms=[ALGORITH])
+        return decoded_token["email"]
+    except jwt.JWTError:
+        return None
