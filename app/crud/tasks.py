@@ -1,3 +1,4 @@
+from fastapi.encoders import jsonable_encoder
 from models.models import Task
 from schemas.tasks import TaskCreate, TaskUpdate
 from sqlalchemy.orm import Session
@@ -33,13 +34,13 @@ def delete_task(db: Session, task_id: int):
 
 
 # Update specific task for selected user
-def update_task(db: Session, task_update: TaskUpdate, task_id: int):
-    task_in = db.get(Task, task_id)
+def update_task(db: Session, task_update: TaskUpdate, task_in: TaskUpdate):
+    item_in_db = jsonable_encoder(task_in)
     updated_task = task_update.dict(exclude_unset=True)
-    for key, value in updated_task.items():
-        if key in update_task:
-            setattr(task_in, key, value)
-    db.add(task_update)
+    for field in item_in_db:
+        if field in updated_task:
+            setattr(task_in, field, updated_task[field])
+    db.add(task_in)
     db.commit()
-    db.refresh(task_update)
+    db.refresh(task_in)
     return task_in
