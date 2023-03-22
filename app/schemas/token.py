@@ -4,10 +4,10 @@ from pydantic import BaseModel
 
 
 class Token(BaseModel):
-    access_token: str
+    email: str
     token_type: str
 
 
 class TokenPayload(BaseModel):
-    subject: str = None
+    email: str = None
     exp: int = None
