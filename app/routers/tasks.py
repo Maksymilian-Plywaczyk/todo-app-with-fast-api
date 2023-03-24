@@ -5,6 +5,7 @@ from crud.users import get_user_by_id
 from dependencies import get_db
 from fastapi import APIRouter, Body, Depends, HTTPException, status
 from routers.utils.tags import Tags
+from schemas.msg import Msg
 from schemas.tasks import Task, TaskUpdate
 from sqlalchemy.orm import Session
 
@@ -33,7 +34,7 @@ def read_user_tasks(
 
 @router.delete(
     "/user/tasks/{task_id}",
-    response_model=Task,
+    response_model=Msg,
     summary="Delete user task by id",
     tags=[Tags.tasks],
 )
@@ -47,11 +48,11 @@ def delete_user_task(user_id: int, task_id: int, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Task not found"
         )
-    deleted_task = delete_task(db=db, task_id=task_id)
-    return deleted_task
+    delete_task(db=db, task_id=task_id)
+    return {"message": "Task deleted successfully"}
 
 
-@router.put("/users/{user_id}/tasks/{task_id}", tags=[Tags.tasks])
+@router.put("/users/{user_id}/tasks/{task_id}", response_model=Msg, tags=[Tags.tasks])
 def update_user_task(
     user_id: int,
     task_id: int,
@@ -72,4 +73,4 @@ def update_user_task(
         update_task(db=db, task_update=task_updated, task_in=task_in)
     except Exception as e:
         raise e
-    return {"msg": "Task updated successfully"}
+    return {"message": "Task updated successfully"}
