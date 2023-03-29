@@ -33,6 +33,13 @@ def delete_task(db: Session, task_id: int):
     return deleted_task
 
 
+def mark_task_as_completed(db: Session, task: TaskUpdate):
+    task.is_completed = True
+    db.commit()
+    db.refresh(task)
+    return True
+
+
 # Update specific task for selected user
 def update_task(db: Session, task_update: TaskUpdate, task_in: TaskUpdate):
     item_in_db = jsonable_encoder(task_in)

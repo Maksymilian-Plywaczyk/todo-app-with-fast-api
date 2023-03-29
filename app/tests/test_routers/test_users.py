@@ -32,12 +32,13 @@ def test_create_new_user_task(client: TestClient, user_id: int = 1):
             "task_description": "Tomorrow clean whole bedroom",
             "task_piority": 1,
             "create_at": "2023-03-19",
+            "is_completed": False,
             "finished_at": "2023-03-19",
         },
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["task_title"] == "Clean room"
+    assert data["message"] == "Task created successfully"
 
 
 @pytest.mark.unit

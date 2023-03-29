@@ -6,7 +6,7 @@ from dependencies import get_current_user, get_db
 from fastapi import APIRouter, Depends, HTTPException, status
 from routers.utils.tags import Tags
 from schemas.msg import Msg
-from schemas.tasks import Task, TaskCreate
+from schemas.tasks import TaskCreate
 from schemas.users import User
 from sqlalchemy.orm import Session
 
@@ -62,6 +62,5 @@ def delete_specific_user(user_id: int, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Not found user to delete"
         )
-    else:
-        deleted_user = delete_user(db=db, user_id=deleted_user.user_id)
+    delete_user(db=db, user_id=deleted_user.user_id)
     return {"message": "User deleted successfully"}

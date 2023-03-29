@@ -20,6 +20,5 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
             status_code=status.HTTP_409_CONFLICT,
             detail="User with this email already exist",
         )
-    else:
-        new_user = create_new_user(db=db, user=user)
+    new_user = create_new_user(db=db, user=user)
     return new_user
