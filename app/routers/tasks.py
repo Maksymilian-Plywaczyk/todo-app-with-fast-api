@@ -1,6 +1,12 @@
 from typing import List
 
-from crud.tasks import delete_task, get_task_by_id, get_tasks_list, update_task
+from crud.tasks import (
+    delete_task,
+    get_task_by_id,
+    get_tasks_list,
+    mark_task_as_completed,
+    update_task,
+)
 from crud.users import get_user_by_id
 from dependencies import get_db
 from fastapi import APIRouter, Body, Depends, HTTPException, status
@@ -33,7 +39,7 @@ def read_user_tasks(
 
 
 @router.delete(
-    "/user/tasks/{task_id}",
+    "/users/{user_id}/tasks/{task_id}",
     response_model=Msg,
     summary="Delete user task by id",
     tags=[Tags.tasks],
@@ -74,3 +80,14 @@ def update_user_task(
     except Exception as e:
         raise e
     return {"message": "Task updated successfully"}
+
+
+@router.put("/closed_task/{task_id}", response_model=Msg, tags=[Tags.tasks])
+def close_completed_task(task_id: int, db: Session = Depends(get_db)):
+    task = get_task_by_id(db=db, task_id=task_id)
+    if not task:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Task not found"
+        )
+    is_completed = mark_task_as_completed(db=db, task=task)
+    return {"message": is_completed}

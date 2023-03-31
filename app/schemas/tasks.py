@@ -23,6 +23,7 @@ class BaseTask(BaseModel):
     create_at: Union[date, None] = Field(
         default=get_time(), description="Create time for task"
     )
+    is_completed: bool = Field(default=False, description="Check if task is completed")
     finished_at: Union[date, None] = None
 
 

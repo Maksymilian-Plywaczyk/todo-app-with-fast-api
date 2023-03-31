@@ -42,7 +42,7 @@ def login(
     return {"email": create_access_token(user.email), "token_type": "bearer"}
 
 
-@router.post("/reset-password/", tags=[Tags.reset_password])
+@router.post("/reset-password/", tags=[Tags.reset_password], response_model=Msg)
 def reset_user_password(
     token: str = Body(...), new_password: str = Body(...), db: Session = Depends(get_db)
 ):
@@ -68,4 +68,4 @@ def reset_user_password(
     db.add(user)
     db.commit()
     db.close()
-    return {"msg": "Password updated successfully"}
+    return {"message": "Password updated successfully"}
