@@ -1,7 +1,8 @@
-from core.security import get_hashed_password
-from models.models import User
-from schemas.users import UserCreate
 from sqlalchemy.orm import Session
+
+from app.core.security import get_hashed_password
+from app.models.models import User
+from app.schemas.users import UserCreate
 
 
 def get_user_by_email(db: Session, user_email: str):

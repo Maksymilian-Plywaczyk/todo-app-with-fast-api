@@ -1,7 +1,8 @@
 from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr, Field
-from schemas.tasks import Task
+
+from app.schemas.tasks import Task
 
 
 # Shared properties

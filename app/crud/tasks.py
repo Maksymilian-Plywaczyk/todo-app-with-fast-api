@@ -1,7 +1,8 @@
 from fastapi.encoders import jsonable_encoder
-from models.models import Task
-from schemas.tasks import TaskCreate, TaskUpdate
 from sqlalchemy.orm import Session
+
+from app.models.models import Task
+from app.schemas.tasks import TaskCreate, TaskUpdate
 
 
 # get list of tasks for selected user

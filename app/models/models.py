@@ -1,8 +1,9 @@
 import datetime
 
-from db.database import Base
 from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+
+from app.db.database import Base
 
 
 def get_time() -> datetime.datetime:
