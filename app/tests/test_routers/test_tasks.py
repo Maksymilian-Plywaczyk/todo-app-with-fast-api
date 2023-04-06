@@ -1,7 +1,8 @@
 import pytest
-from crud.users import create_new_user
 from fastapi.testclient import TestClient
-from schemas.users import UserCreate
+
+from app.crud.users import create_new_user
+from app.schemas.users import UserCreate
 
 
 @pytest.fixture()

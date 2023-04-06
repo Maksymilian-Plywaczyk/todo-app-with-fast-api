@@ -1,14 +1,15 @@
 from typing import List
 
-from crud.tasks import create_task
-from crud.users import delete_user, get_user_by_id, get_user_list
-from dependencies import get_current_user, get_db
 from fastapi import APIRouter, Depends, HTTPException, status
-from routers.utils.tags import Tags
-from schemas.msg import Msg
-from schemas.tasks import TaskCreate
-from schemas.users import User
 from sqlalchemy.orm import Session
+
+from app.crud.tasks import create_task
+from app.crud.users import delete_user, get_user_by_id, get_user_list
+from app.dependencies import get_current_user, get_db
+from app.routers.utils.tags import Tags
+from app.schemas.msg import Msg
+from app.schemas.tasks import TaskCreate
+from app.schemas.users import User
 
 router = APIRouter()
 

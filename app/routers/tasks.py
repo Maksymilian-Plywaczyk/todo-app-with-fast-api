@@ -1,19 +1,20 @@
 from typing import List
 
-from crud.tasks import (
+from fastapi import APIRouter, Body, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+
+from app.crud.tasks import (
     delete_task,
     get_task_by_id,
     get_tasks_list,
     mark_task_as_completed,
     update_task,
 )
-from crud.users import get_user_by_id
-from dependencies import get_db
-from fastapi import APIRouter, Body, Depends, HTTPException, status
-from routers.utils.tags import Tags
-from schemas.msg import Msg
-from schemas.tasks import Task, TaskUpdate
-from sqlalchemy.orm import Session
+from app.crud.users import get_user_by_id
+from app.dependencies import get_db
+from app.routers.utils.tags import Tags
+from app.schemas.msg import Msg
+from app.schemas.tasks import Task, TaskUpdate
 
 router = APIRouter()
 

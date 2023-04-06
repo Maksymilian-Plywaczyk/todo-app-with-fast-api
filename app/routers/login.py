@@ -1,19 +1,20 @@
 from typing import Any
 
-from core.security import (
+from fastapi import APIRouter, Body, Depends, HTTPException, status
+from fastapi.security import OAuth2PasswordRequestForm
+from sqlalchemy.orm import Session
+
+from app.core.security import (
     create_access_token,
     get_hashed_password,
     verify_password,
     verify_reset_password_token,
 )
-from crud.users import get_user_by_email, user_is_active
-from dependencies import get_db
-from fastapi import APIRouter, Body, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordRequestForm
-from routers.utils.tags import Tags
-from schemas.msg import Msg
-from schemas.token import Token
-from sqlalchemy.orm import Session
+from app.crud.users import get_user_by_email, user_is_active
+from app.dependencies import get_db
+from app.routers.utils.tags import Tags
+from app.schemas.msg import Msg
+from app.schemas.token import Token
 
 router = APIRouter()
 

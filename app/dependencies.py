@@ -1,15 +1,16 @@
 from datetime import datetime
-from typing import Generator, Union
+from typing import Generator
 
-from core.security import ALGORITH, SECRET_KEY
-from crud.users import get_user_by_email
-from db.database import SessionLocal
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from pydantic import ValidationError
-from schemas.token import TokenPayload
 from sqlalchemy.orm import Session
+
+from app.core.security import ALGORITH, SECRET_KEY
+from app.crud.users import get_user_by_email
+from app.db.database import SessionLocal
+from app.schemas.token import TokenPayload
 
 
 def get_db() -> Generator:
