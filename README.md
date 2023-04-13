@@ -29,3 +29,13 @@ Open your terminal and pass:
 Go to:
 <br/>
 `localhost:8000/docs`
+
+## Docker configuration
+In order to run the project in a docker container you must run a `docker daemon` on your computer and then type command:
+<br/>
+`docker compose up --build`
+<br/>
+There are one container at this moment:
+ -   Backend on port 8000 (name: `api_todo`)
+
+Container is configurated to work as development environment so every change in api will trigger auto reload container. 
