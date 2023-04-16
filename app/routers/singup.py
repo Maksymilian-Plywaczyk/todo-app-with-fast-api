@@ -1,4 +1,3 @@
-# TODO make a singup page
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
