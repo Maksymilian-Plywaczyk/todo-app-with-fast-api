@@ -11,35 +11,22 @@ from app.schemas.msg import Msg
 from app.schemas.tasks import TaskCreate
 from app.schemas.users import User
 
-router = APIRouter()
+router = APIRouter(prefix='/users', tags=[Tags.users])
 
 
 @router.get(
-    "/me",
-    summary="Get details of currently logged in user",
-    response_model=User,
-    tags=[Tags.users],
+    "/me", summary="Get details of currently logged in user", response_model=User
 )
 def get_me(current_user: User = Depends(get_current_user)):
     return current_user
 
 
-@router.get(
-    "/users",
-    summary="Get all users in database",
-    response_model=List[User],
-    tags=[Tags.users],
-)
+@router.get("/", summary="Get all users in database", response_model=List[User])
 def get_users(db: Session = Depends(get_db), skip: int = 0, limit: int = 0):
     return get_user_list(db=db, skip=skip, limit=limit)
 
 
-@router.post(
-    "/users/{user_id}/task",
-    summary="Create new task for user",
-    response_model=Msg,
-    tags=[Tags.tasks],
-)
+@router.post("/{user_id}/task", summary="Create new task for user", response_model=Msg)
 def create_new_task(user_id: int, new_task: TaskCreate, db: Session = Depends(get_db)):
     user = get_user_by_id(db=db, user_id=user_id)
     if not user:
@@ -52,10 +39,7 @@ def create_new_task(user_id: int, new_task: TaskCreate, db: Session = Depends(ge
 
 
 @router.delete(
-    "/delete_user/{user_id}",
-    summary="Delete user from database",
-    tags=[Tags.users],
-    response_model=Msg,
+    "/delete_user/{user_id}", summary="Delete user from database", tags=[Tags.users]
 )
 def delete_specific_user(user_id: int, db: Session = Depends(get_db)):
     deleted_user = get_user_by_id(db=db, user_id=user_id)

@@ -11,8 +11,6 @@ def get_time() -> datetime.datetime:
 
 
 class User(Base):
-    __tablename__ = "users"
-
     user_id = Column(Integer, primary_key=True, index=True)
     full_name = Column(String, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
@@ -23,8 +21,6 @@ class User(Base):
 
 
 class Task(Base):
-    __tablename__ = "tasks"
-
     id = Column(Integer, primary_key=True, index=True)
     task_title = Column(String, index=True, nullable=False)
     task_description = Column(String, index=True)

@@ -2,7 +2,7 @@ import os
 
 from dotenv import find_dotenv, load_dotenv
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.ext.declarative import as_declarative, declared_attr
 from sqlalchemy.orm import sessionmaker
 
 load_dotenv(find_dotenv())
@@ -16,4 +16,9 @@ engine = create_engine(
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-Base = declarative_base()
+
+@as_declarative()
+class Base:
+    @declared_attr
+    def __tablename__(cls):
+        return cls.__name__.lower()

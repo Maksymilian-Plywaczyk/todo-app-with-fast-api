@@ -16,7 +16,7 @@ from app.routers.utils.tags import Tags
 from app.schemas.msg import Msg
 from app.schemas.tasks import Task, TaskUpdate
 
-router = APIRouter()
+router = APIRouter(tags=[Tags.tasks])
 
 
 # TODO make routers for task
@@ -26,7 +26,6 @@ router = APIRouter()
     "/user/{user_id}/tasks/",
     summary="Get all tasks from current user",
     response_model=List[Task],
-    tags=[Tags.tasks],
 )
 def read_user_tasks(
     user_id: int, db: Session = Depends(get_db), skip: int = 0, limit: int = 100
@@ -43,7 +42,6 @@ def read_user_tasks(
     "/users/{user_id}/tasks/{task_id}",
     response_model=Msg,
     summary="Delete user task by id",
-    tags=[Tags.tasks],
 )
 def delete_user_task(user_id: int, task_id: int, db: Session = Depends(get_db)):
     user = get_user_by_id(db=db, user_id=user_id)
@@ -59,7 +57,7 @@ def delete_user_task(user_id: int, task_id: int, db: Session = Depends(get_db)):
     return {"message": "Task deleted successfully"}
 
 
-@router.put("/users/{user_id}/tasks/{task_id}", response_model=Msg, tags=[Tags.tasks])
+@router.put("/users/{user_id}/tasks/{task_id}", response_model=Msg)
 def update_user_task(
     user_id: int,
     task_id: int,
@@ -83,7 +81,7 @@ def update_user_task(
     return {"message": "Task updated successfully"}
 
 
-@router.put("/closed_task/{task_id}", response_model=Msg, tags=[Tags.tasks])
+@router.put("/closed_task/{task_id}", response_model=Msg)
 def close_completed_task(task_id: int, db: Session = Depends(get_db)):
     task = get_task_by_id(db=db, task_id=task_id)
     if not task:
