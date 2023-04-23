@@ -28,6 +28,6 @@ class Task(Base):
     create_at = Column(Date, default=get_time)
     finished_at = Column(Date, default=get_time)
     is_completed = Column(Boolean, default=False, nullable=False)
-    user_id = Column(Integer, ForeignKey("users.user_id"))
+    user_id = Column(Integer, ForeignKey("user.user_id"))
 
     owner = relationship("User", back_populates="tasks")
