@@ -21,7 +21,7 @@ def get_db() -> Generator:
         db.close()
 
 
-reuseable_oauth = OAuth2PasswordBearer(tokenUrl="/login")
+reuseable_oauth = OAuth2PasswordBearer(tokenUrl="/token")
 
 
 def get_current_user(
@@ -42,7 +42,7 @@ def get_current_user(
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    user = get_user_by_email(db=db, user_email=token_data.subject)
+    user = get_user_by_email(db=db, user_email=token_data.email)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

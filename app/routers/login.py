@@ -1,3 +1,4 @@
+from datetime import timedelta
 from typing import Any
 
 from fastapi import APIRouter, Body, Depends, HTTPException, status
@@ -7,10 +8,9 @@ from sqlalchemy.orm import Session
 from app.core.security import (
     create_access_token,
     get_hashed_password,
-    verify_password,
     verify_reset_password_token,
 )
-from app.crud.users import get_user_by_email, user_is_active
+from app.crud.users import get_user_by_email, user_authentication, user_is_active
 from app.dependencies import get_db
 from app.routers.utils.tags import Tags
 from app.schemas.msg import Msg
@@ -19,37 +19,32 @@ from app.schemas.token import Token
 router = APIRouter()
 
 
-@router.post(
-    "/login/",
-    summary="Create access token for user",
-    response_model=Token,
-    tags=[Tags.login],
-)
-def login(
+@router.post("/token", response_model=Token, tags=[Tags.login])
+def login_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
-):
-    user = get_user_by_email(db=db, user_email=form_data.username)
+) -> Any:
+    user = user_authentication(
+        db=db, user_email=form_data.username, password=form_data.password
+    )
 
-    if user is None:
+    if not user:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
+            status_code=status.HTTP_401_BAD_REQUEST,
             detail="Incorrect email or password",
         )
-    if not verify_password(form_data.password, hashed_password=user.hashed_password):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Incorrect email or password",
-        )
-    return {"email": create_access_token(user.email), "token_type": "bearer"}
+    access_token_expires = timedelta(minutes=30)
+    return {
+        "access_token": create_access_token(
+            subject=user.email, expires_delta=access_token_expires
+        ),
+        "token_type": "bearer",
+    }
 
 
 @router.post("/reset-password/", tags=[Tags.reset_password], response_model=Msg)
 def reset_user_password(
     token: str = Body(...), new_password: str = Body(...), db: Session = Depends(get_db)
 ):
-    """
-    RESET USER PASSWORD
-    """
     email = verify_reset_password_token(token=token)
     if not email:
         raise HTTPException(

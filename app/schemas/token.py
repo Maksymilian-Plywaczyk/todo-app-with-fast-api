@@ -1,9 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Token(BaseModel):
-    email: str
-    token_type: str
+    access_token: str
+    token_type: str = Field(default="bearer", description="Type of token")
 
 
 class TokenPayload(BaseModel):
