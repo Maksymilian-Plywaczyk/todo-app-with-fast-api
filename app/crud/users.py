@@ -1,6 +1,13 @@
+from typing import Optional
+
 from sqlalchemy.orm import Session
 
-from app.core.security import get_hashed_password
+from app.core.security import (
+    get_hashed_password,
+    oauth2_scheme,
+    verify_password,
+    verify_reset_password_token,
+)
 from app.models.models import User
 from app.schemas.users import UserCreate
 
@@ -41,3 +48,12 @@ def delete_user(db: Session, user_id: int):
 
 def user_is_active(user: User):
     return user.is_active
+
+
+def user_authentication(db: Session, user_email: str, password: str) -> Optional[User]:
+    user = get_user_by_email(db=db, user_email=user_email)
+    if not user:
+        return None
+    if not verify_password(password, hashed_password=user.hashed_password):
+        return None
+    return user
