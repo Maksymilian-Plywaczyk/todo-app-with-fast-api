@@ -1,5 +1,4 @@
 from datetime import timedelta
-from typing import Any
 
 from fastapi import APIRouter, Body, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
@@ -22,7 +21,7 @@ router = APIRouter()
 @router.post("/token", response_model=Token, tags=[Tags.login])
 def login_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
-) -> Any:
+):
     user = user_authentication(
         db=db, user_email=form_data.username, password=form_data.password
     )
