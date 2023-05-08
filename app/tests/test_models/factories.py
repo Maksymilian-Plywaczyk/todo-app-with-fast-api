@@ -9,8 +9,8 @@ class UserFactory(factory.Factory):
     class Meta:
         model = User
 
-    full_name = factory.Faker('name')
-    email = factory.Faker('email')
+    full_name = 'Test model'
+    email = 'test@example.com'
     hashed_password = factory.Faker('password')
     is_active = True
     tasks = []
@@ -22,7 +22,7 @@ class TaskFactory(factory.Factory):
 
     task_title = 'Test task'
     task_description = 'Test task description'
-    task_piority = randint(1, 4)
+    task_priority = randint(1, 4)
     create_at = factory.Faker('date')
     finished_at = factory.Faker('date')
     is_completed = factory.Faker('boolean')
