@@ -16,8 +16,8 @@ class BaseTask(BaseModel):
         description="Task description must be less than 300 characters.",
         max_length=300,
     )
-    task_piority: Union[int, None] = Field(
-        default=None, ge=0, le=4, description="Task piority choose 1-4"
+    task_priority: Union[int, None] = Field(
+        default=None, ge=0, le=4, description="Task priority choose 1-4"
     )
     create_at: Union[date, None] = Field(
         default=get_time(), description="Create time for task"

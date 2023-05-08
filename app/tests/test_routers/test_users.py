@@ -30,7 +30,7 @@ def test_create_new_user_task(client: TestClient, user_id: int = 1):
         json={
             "task_title": "Clean room",
             "task_description": "Tomorrow clean whole bedroom",
-            "task_piority": 1,
+            "task_priority": 1,
             "create_at": "2023-03-19",
             "is_completed": False,
             "finished_at": "2023-03-19",
@@ -43,5 +43,5 @@ def test_create_new_user_task(client: TestClient, user_id: int = 1):
 
 @pytest.mark.unit
 def test_delete_user(client: TestClient, user_id: int = 1):
-    response = client.delete(f'/delete_user/{user_id}')
+    response = client.delete(f'/users/delete_user/{user_id}')
     assert response.status_code == 200

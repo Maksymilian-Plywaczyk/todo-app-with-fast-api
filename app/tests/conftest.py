@@ -32,7 +32,7 @@ def db_engine():
     yield engine
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def db_session(db_engine):
     connection = db_engine.connect()
     transaction = connection.begin()
@@ -46,13 +46,13 @@ def db_session(db_engine):
     connection.close()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def override_get_db(db_session):
     yield db_session
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def client(override_get_db):
-    app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_db] = lambda: override_get_db
     with TestClient(app) as c:
         yield c
