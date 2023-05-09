@@ -15,7 +15,7 @@ This project use FastAPI to create API for TODO list. The aim of the project is 
 	 `source venv/bin/activate` or on Windows `venv/Scripts/activate`
  4. Install list of dependencies from `requirements.txt`\
 	`pip install -r requirements.txt`
- 5. Create `.env` file i `app/` folder as the `.env.example` file and swap `SECRET KEY` with yours.
+ 5. Create `.env` file i `app/` folder as the `.env.example` file and swap `SECRET KEY` with yours [Getting secret key](#getting-secret-key).
 7. Run the project using [Docker configuration](#docker-configuration) and you should see the docs in url [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 8. Feel free to use this API :)
 
@@ -28,3 +28,8 @@ There are one container at this moment:
  -   Backend on port 8000 (name: `api_todo`)
 
 Container is configurated to work as development environment so every change in api will trigger auto reload container. 
+
+## GETTING SECRET KEY
+To get secret key, which you need to pass in `.env` file you need to type in terminal that command and then copy this to `.env` file:
+<br/>
+`openssl rand -hex 32`
