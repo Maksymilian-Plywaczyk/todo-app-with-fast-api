@@ -18,9 +18,10 @@ This project use FastAPI to create API for TODO list. The aim of the project is 
  4. Install list of dependencies from `requirements.txt`\
 	`pip install -r requirements.txt`
  5. Create `.env` file in `todo-app-with-fast-api/` folder as the `.env.template` file and swap `SECRET KEY` with yours [Getting secret key](#getting-secret-key).
-6. In directory `todo-app-with-fast-api/` run command: `uvicorn app.main:app --reload`. Flag `--reload` enable user auto-reload for quicker development.
-7. Feel free to use this API :)
-
+ 6. Databases url for `SQLALCHEMY_DATABASE_URL` and `SQLALCHEMY_DATABASE_TEST_URL` are set by default but you can change names as you wish. Databases will be created after you run for the first time app.
+7. In directory `todo-app-with-fast-api/` run command: `uvicorn app.main:app --reload`. Flag `--reload` enable user auto-reload for quicker development.
+8. Feel free to use this API :)
+9. You can also run project with Docker [Docker config](#docker-configuration)
 ## Docker configuration
 In order to run the project in a docker container you must run a `docker daemon` on your computer and then type command:
 <br/>
