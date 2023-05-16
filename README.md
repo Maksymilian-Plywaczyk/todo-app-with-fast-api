@@ -17,7 +17,7 @@ This project use FastAPI to create API for TODO list. The aim of the project is 
 	 `source venv/bin/activate` or on Windows `venv/Scripts/activate`
  4. Install list of dependencies from `requirements.txt`\
 	`pip install -r requirements.txt`
- 5. Create `.env` file in `todo-app-with-fast-api/` folder as the `.env.example` file and swap `SECRET KEY` with yours [Getting secret key](#getting-secret-key).
+ 5. Create `.env` file in `todo-app-with-fast-api/` folder as the `.env.template` file and swap `SECRET KEY` with yours [Getting secret key](#getting-secret-key).
 6. In directory `todo-app-with-fast-api/` run command: `uvicorn app.main:app --reload`. Flag `--reload` enable user auto-reload for quicker development.
 7. Feel free to use this API :)
 
