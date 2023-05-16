@@ -7,5 +7,5 @@ class Token(BaseModel):
 
 
 class TokenPayload(BaseModel):
-    email: str = None
+    subject: str = None
     exp: int = None

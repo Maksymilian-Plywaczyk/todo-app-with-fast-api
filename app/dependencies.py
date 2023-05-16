@@ -42,7 +42,8 @@ def get_current_user(
             detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    user = get_user_by_email(db=db, user_email=token_data.email)
+
+    user = get_user_by_email(db=db, user_email=token_data.subject)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
