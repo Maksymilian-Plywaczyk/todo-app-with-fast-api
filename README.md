@@ -10,6 +10,8 @@ This project use FastAPI to create API for TODO list. The aim of the project is 
   `cd <your_directory_name>`
  2. Clone the repository from GitHub (using HTPS):\
 	`git clone https://github.com/Maksymilian-Plywaczyk/todo-app-with-fast-api.git`
+	<br/>
+	Jump to directory `todo-app-with-fast-api/`
  3. Create a virtual environment to isolate our package dependencies locally\
 	 `python -m venv venv`\
 	 `source venv/bin/activate` or on Windows `venv/Scripts/activate`
