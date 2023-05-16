@@ -15,9 +15,9 @@ This project use FastAPI to create API for TODO list. The aim of the project is 
 	 `source venv/bin/activate` or on Windows `venv/Scripts/activate`
  4. Install list of dependencies from `requirements.txt`\
 	`pip install -r requirements.txt`
- 5. Create `.env` file i `app/` folder as the `.env.example` file and swap `SECRET KEY` with yours [Getting secret key](#getting-secret-key).
-7. Run the project using [Docker configuration](#docker-configuration) and you should see the docs in url [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-8. Feel free to use this API :)
+ 5. Create `.env` file in `todo-app-with-fast-api/` folder as the `.env.example` file and swap `SECRET KEY` with yours [Getting secret key](#getting-secret-key).
+6. In directory `todo-app-with-fast-api/` run command: `uvicorn app.main:app --reload`. Flag `--reload` enable user auto-reload for quicker development.
+7. Feel free to use this API :)
 
 ## Docker configuration
 In order to run the project in a docker container you must run a `docker daemon` on your computer and then type command:
@@ -28,6 +28,8 @@ There are one container at this moment:
  -   Backend on port 8000 (name: `api_todo`)
 
 Container is configurated to work as development environment so every change in api will trigger auto reload container. 
+<br/>
+You should see the docs in url [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 ## GETTING SECRET KEY
 To get secret key, which you need to pass in `.env` file you need to type in terminal that command and then copy this to `.env` file:
