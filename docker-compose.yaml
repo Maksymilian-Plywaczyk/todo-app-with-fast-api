@@ -1,5 +1,24 @@
 version: "3.8"
 services:
+  postgres:
+    image: postgres:15.1-alpine3.17
+    container_name: postgres_todo
+    restart: always
+    env_file:
+      - .env
+    environment:
+      PGDATA: /data/
+    volumes:
+      - ./database:/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U admin -d todo_db"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
   api:
     build: .
     container_name: api_todo
@@ -8,5 +27,8 @@ services:
       - .env
     ports:
         - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
     volumes:
       - .:/todo_api
