@@ -28,7 +28,7 @@ def login_access_token(
 
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_401_BAD_REQUEST,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
         )
     access_token_expires = timedelta(minutes=30)

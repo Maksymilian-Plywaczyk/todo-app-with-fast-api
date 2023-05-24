@@ -4,6 +4,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.crud.tasks import (
+    create_task,
     delete_task,
     get_task_by_id,
     get_tasks_list,
@@ -14,7 +15,7 @@ from app.crud.users import get_user_by_id
 from app.dependencies import get_db
 from app.routers.utils.tags import Tags
 from app.schemas.msg import Msg
-from app.schemas.tasks import Task, TaskUpdate
+from app.schemas.tasks import Task, TaskCreate, TaskUpdate
 
 router = APIRouter(tags=[Tags.tasks])
 
@@ -36,6 +37,18 @@ def read_user_tasks(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
     return get_tasks_list(db=db, skip=skip, limit=limit)
+
+
+@router.post("/{user_id}/task", summary="Create new task for user", response_model=Msg)
+def create_new_task(user_id: int, new_task: TaskCreate, db: Session = Depends(get_db)):
+    user = get_user_by_id(db=db, user_id=user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
+        )
+
+    create_task(db=db, newTask=new_task, user_id=user_id)
+    return {"message": "Task created successfully"}
 
 
 @router.delete(
