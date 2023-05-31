@@ -17,7 +17,7 @@ This project use FastAPI to create API for TODO list. The aim of the project is 
 	 `source venv/bin/activate` or on Windows `venv/Scripts/activate`
  4. Install list of dependencies from `requirements.txt`\
 	`pip install -r requirements.txt`
- 5. Create `.env` file in `todo-app-with-fast-api/` folder as the `.env.template` file and swap `SECRET KEY` with yours [Getting secret key](#getting-secret-key).
+ 5. Create `.env` file: `cp .env.template .env` and swap `SECRET KEY` with yours [Getting secret key](#getting-secret-key).
  6. Databases url for `SQLALCHEMY_DATABASE_URL` and `SQLALCHEMY_DATABASE_TEST_URL` are set by default but you can change names as you wish. Databases will be created after you run for the first time app.
 7. In directory `todo-app-with-fast-api/` run command: `uvicorn app.main:app --reload`. Flag `--reload` enable user auto-reload for quicker development.
 8. Feel free to use this API :)
