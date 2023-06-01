@@ -15,7 +15,7 @@ class Project(Base):
     name = Column(String, index=False, nullable=False)
     color_icon = Column(String, index=False, nullable=False)
     is_favorite = Column(Boolean, default=False)
-
+    user_id = Column(Integer, ForeignKey("user.user_id"))
     owner = relationship("User", back_populates="projects")
 
 
@@ -49,5 +49,5 @@ class Section(Base):
     project_id = Column(Integer, ForeignKey("project.project_id"))
     order = Column(Integer)
     name = Column(String, nullable=False)
-
+    owner_id = Column(Integer, ForeignKey("user.user_id"))
     owner = relationship("User", back_populates="sections")
