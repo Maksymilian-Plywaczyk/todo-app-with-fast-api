@@ -8,13 +8,14 @@ services:
       - .env
     environment:
       PGDATA: /data/
+
     volumes:
       - ./database:/data
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+          "pg_isready -U admin -d ${POSTGRES_DB}"
         ]
       interval: 5s
       timeout: 5s
@@ -25,6 +26,10 @@ services:
     restart: always
     env_file:
       - .env
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
     ports:
         - "8000:8000"
     depends_on:
