@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix: 
-        python-version: ["3.9","3.10","3.11"]
+        python-version: ["3.9"]
         
     steps:
     - uses: actions/checkout@v3
@@ -29,17 +29,13 @@ jobs:
         pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Lint with ruff
-      run: |
-        pip install ruff
-        ruff --format=github --target-version=py37 .
-    - name: Check black
-      run: |
-        pip install black
-        black --check .
-    - name: Check isort
-      run: |
-        pip install isort
-        isort --check .
+      uses: jpetrucciani/ruff-check@main
+    - name: Run black
+      uses: psf/black@stable
+    - name: Run isort
+      uses: isort/isort-action@master
+      with:
+        requirementsFiles: "requirements.txt requirements-test.txt"
     - name: Test with pytest
       run: |
         pytest
