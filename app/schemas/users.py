@@ -2,6 +2,8 @@ from typing import List, Optional
 
 from pydantic import BaseModel, EmailStr, Field
 
+from app.schemas.project import Project
+from app.schemas.section import Section
 from app.schemas.tasks import Task
 
 
@@ -21,7 +23,9 @@ class UserCreate(UserBase):
 class UserInDB(UserBase):
     user_id: int
     hashed_password: str
+    projects: List[Project] = Field(default=[], description="User's projects")
     tasks: List[Task] = Field(default=[], description="User's tasks")
+    sections: List[Section] = Field(default=[], description="User's sections")
 
     class Config:
         orm_mode = True
