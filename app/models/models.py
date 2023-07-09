@@ -36,6 +36,8 @@ class Task(Base):
     task_description = Column(String, index=True)
     task_priority = Column(Integer, index=True)
     create_at = Column(Date, default=get_time)
+    comment_count = Column(Integer, default=0)
+    url = Column(String, index=True)
     finished_at = Column(Date, default=get_time)
     is_completed = Column(Boolean, default=False, nullable=False)
     user_id = Column(Integer, ForeignKey("user.user_id"))
