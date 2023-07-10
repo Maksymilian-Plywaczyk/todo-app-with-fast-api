@@ -12,10 +12,11 @@ from app.crud.tasks import (
     update_task,
 )
 from app.crud.users import get_user_by_id
-from app.dependencies import get_db
+from app.dependencies import get_current_user, get_db
 from app.routers.utils.tags import Tags
 from app.schemas.msg import Msg
 from app.schemas.tasks import Task, TaskCreate, TaskUpdate
+from app.schemas.users import User
 
 router = APIRouter(tags=[Tags.tasks])
 
@@ -39,15 +40,38 @@ def read_user_tasks(
     return get_tasks_list(db=db, skip=skip, limit=limit)
 
 
-@router.post("/{user_id}/task", summary="Create new task for user", response_model=Msg)
-def create_new_task(user_id: int, new_task: TaskCreate, db: Session = Depends(get_db)):
+@router.get("/show_task/", summary="Get task by id", response_model=Task)
+def read_task_by_id(task_id: int, db: Session = Depends(get_db)):
+    task = get_task_by_id(db=db, task_id=task_id)
+    if task is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Task not found"
+        )
+    return task
+
+
+@router.post("/create_task", summary="Create new task for user", response_model=Msg)
+def create_new_task(
+    new_task: TaskCreate,
+    project_id: int,
+    section_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    user_id = current_user.user_id
     user = get_user_by_id(db=db, user_id=user_id)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
 
-    create_task(db=db, newTask=new_task, user_id=user_id)
+    create_task(
+        db=db,
+        newTask=new_task,
+        user_id=user_id,
+        project_id=project_id,
+        section_id=section_id,
+    )
     return {"message": "Task created successfully"}
 
 

@@ -17,8 +17,10 @@ def get_task_by_id(db: Session, task_id: int):
 
 
 # Create new task for selected user
-def create_task(db: Session, newTask: TaskCreate, user_id: int):
-    database_task = Task(**newTask.dict(), user_id=user_id)
+def create_task(db: Session, newTask: TaskCreate, user_id: int, project_id, section_id):
+    database_task = Task(
+        **newTask.dict(), user_id=user_id, project_id=project_id, section_id=section_id
+    )
     db.add(database_task)
     db.commit()
     db.refresh(database_task)
