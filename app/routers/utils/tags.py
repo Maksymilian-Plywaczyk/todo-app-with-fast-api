@@ -7,3 +7,5 @@ class Tags(str, Enum):
     login: str = "Login"
     register: str = "Registration"
     reset_password: str = "Reset user password"
+    projects: str = "Projects"
+    sections: str = "Sections"
