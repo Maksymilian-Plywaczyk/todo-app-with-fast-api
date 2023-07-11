@@ -21,7 +21,7 @@ def get_db() -> Generator:
         db.close()
 
 
-reuseable_oauth = OAuth2PasswordBearer(tokenUrl="/token")
+reuseable_oauth = OAuth2PasswordBearer(tokenUrl="api/v1/token")
 
 
 def get_current_user(
