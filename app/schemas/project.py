@@ -1,11 +1,11 @@
-from pydantic import BaseModel, Field
+from typing import Union
 
-from app.schemas.colors import ColorBase
+from pydantic import BaseModel, Field
 
 
 class ProjectBase(BaseModel):
     name: str = Field(..., description="Project name")
-    color_icon: ColorBase = Field(..., description="Project color icon")
+    color_icon: str = Field(..., description="Project color icon")
     is_favorite: bool = Field(default=False, description="Check if project is favorite")
 
 
@@ -14,7 +14,11 @@ class ProjectCreate(ProjectBase):
 
 
 class ProjectUpdate(ProjectBase):
-    pass
+    name: Union[str, None] = Field(None, description="Project name")
+    color_icon: Union[str, None] = Field(None, description="Project color icon")
+    is_favorite: Union[bool, None] = Field(
+        None, description="Check if project is favorite"
+    )
 
 
 class Project(ProjectBase):

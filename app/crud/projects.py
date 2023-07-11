@@ -1,9 +1,9 @@
-from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 
 from app.models.models import Project as ProjectModel
 from app.models.models import User
-from app.schemas.project import Project, ProjectCreate, ProjectUpdate
+from app.schemas.collaborators import Collaborator, CollaboratorProperties
+from app.schemas.project import ProjectCreate, ProjectUpdate
 
 
 def get_all_project_list(db: Session, skip: int = 0, limit: int = 100):
@@ -11,7 +11,9 @@ def get_all_project_list(db: Session, skip: int = 0, limit: int = 100):
 
 
 def get_project_by_id(db: Session, project_id: int):
-    project = db.query(ProjectModel).filter(ProjectModel.id == project_id).first()
+    project = (
+        db.query(ProjectModel).filter(ProjectModel.project_id == project_id).first()
+    )
     return project
 
 
@@ -24,21 +26,21 @@ def create_project(db: Session, new_project: ProjectCreate, user_id: int):
 
 
 def delete_project(db: Session, project_id: int):
-    project_to_delete = get_project_by_id(db=db, project_id=project_id)
+    project_to_delete = (
+        db.query(ProjectModel).filter(ProjectModel.project_id == project_id).first()
+    )
     db.delete(project_to_delete)
     db.commit()
-    db.refresh(project_to_delete)
+    db.close()
     return project_to_delete
 
 
 def update_existing_project(
     db: Session, project_update: ProjectUpdate, project_in: ProjectUpdate
 ):
-    item_in_db = jsonable_encoder(project_in)
     updated_project = project_update.dict(exclude_unset=True)
-    for field in item_in_db:
-        if field in updated_project:
-            setattr(project_in, field, updated_project[field])
+    for key, item in updated_project.items():
+        setattr(project_in, key, item)
     db.add(project_in)
     db.commit()
     db.refresh(project_in)
@@ -46,7 +48,19 @@ def update_existing_project(
 
 
 def show_collaborators(db: Session, project_id: int):
-    collaborators = (
-        db.query(User).join(Project).filter(Project.project_id == project_id).all()
+    users = (
+        db.query(User)
+        .join(ProjectModel)
+        .filter(ProjectModel.project_id == project_id)
+        .all()
     )
+    collaborators = []
+    for user in users:
+        collaborators.append(
+            Collaborator(
+                collaborator=CollaboratorProperties(
+                    id=user.user_id, name=user.full_name, email=user.email
+                )
+            )
+        )
     return collaborators
