@@ -32,7 +32,7 @@ def delete_task(db: Session, task_id: int):
     deleted_task = db.query(Task).filter(Task.id == task_id).first()
     db.delete(deleted_task)
     db.commit()
-    db.refresh(deleted_task)
+    db.close()
     return deleted_task
 
 
