@@ -1,3 +1,5 @@
+from typing import Union
+
 from pydantic import BaseModel, Field
 
 
@@ -11,7 +13,8 @@ class SectionCreate(SectionBase):
 
 
 class SectionUpdate(SectionBase):
-    pass
+    order: Union[int, None] = Field(None, description="Section order")
+    name: Union[str, None] = Field(None, description="Section name")
 
 
 class Section(SectionBase):
