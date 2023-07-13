@@ -1,11 +1,12 @@
 from typing import List
 
-from fastapi import APIRouter, Body, Depends, HTTPException, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.crud.tasks import (
     create_task,
     delete_task,
+    get_active_task,
     get_task_by_id,
     get_tasks_list,
     mark_task_as_completed,
@@ -13,12 +14,13 @@ from app.crud.tasks import (
 )
 from app.crud.users import get_user_by_id
 from app.dependencies import get_current_user, get_db
+from app.routers.utils.prefixes import APIPrefixes
 from app.routers.utils.tags import Tags
 from app.schemas.msg import Msg
 from app.schemas.tasks import Task, TaskCreate, TaskUpdate
 from app.schemas.users import User
 
-router = APIRouter(tags=[Tags.tasks])
+router = APIRouter(prefix=APIPrefixes.tasks, tags=[Tags.tasks])
 
 
 # TODO make routers for task
@@ -48,6 +50,23 @@ def read_task_by_id(task_id: int, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND, detail="Task not found"
         )
     return task
+
+
+@router.get(
+    "/show_active_task/",
+    summary="Get active task by id",
+    response_model=Task,
+    status_code=status.HTTP_200_OK,
+)
+def show_active_task(
+    task_id: int = Query(..., description="Task id"), db: Session = Depends(get_db)
+):
+    active_task = get_active_task(db=db, task_id=task_id)
+    if active_task is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Task not found"
+        )
+    return active_task
 
 
 @router.post("/create_task", summary="Create new task for user", response_model=Msg)

@@ -5,10 +5,11 @@ from sqlalchemy.orm import Session
 
 from app.crud.users import delete_user, get_user_by_id, get_user_list
 from app.dependencies import get_current_user, get_db
+from app.routers.utils.prefixes import APIPrefixes
 from app.routers.utils.tags import Tags
 from app.schemas.users import User
 
-router = APIRouter(prefix='/users', tags=[Tags.users])
+router = APIRouter(prefix=APIPrefixes.users, tags=[Tags.users])
 
 
 @router.get("/me", summary="Get details of currently user", response_model=User)

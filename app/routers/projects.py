@@ -13,22 +13,23 @@ from app.crud.projects import (
 )
 from app.crud.users import get_user_by_id
 from app.dependencies import get_current_user, get_db
+from app.routers.utils.prefixes import APIPrefixes
 from app.routers.utils.tags import Tags
 from app.schemas.collaborators import Collaborator
 from app.schemas.project import Project, ProjectCreate, ProjectUpdate
 from app.schemas.users import User
 
-router = APIRouter(tags=[Tags.projects])
+router = APIRouter(prefix=APIPrefixes.projects, tags=[Tags.projects])
 
 
 @router.get(
-    "/project/{project_id}",
+    "/show_project",
     summary="Get project by id",
     status_code=status.HTTP_200_OK,
     response_model=Project,
 )
-def get_project(project_id: int, db: Session = Depends(get_db)) -> Project:
-    current_project = get_project_by_id(db=db, project_id=project_id)
+def get_project(id: int = Query(..., gt=0), db: Session = Depends(get_db)) -> Project:
+    current_project = get_project_by_id(db=db, project_id=id)
     if current_project is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Project not found"
