@@ -1,5 +1,6 @@
 from typing import Optional
 
+from sqlalchemy import Integer, cast
 from sqlalchemy.orm import Session
 
 from app.core.security import get_hashed_password, verify_password
@@ -13,7 +14,7 @@ def get_user_by_email(db: Session, user_email: str):
 
 
 def get_user_by_id(db: Session, user_id: int):
-    user_by_id = db.query(User).filter(User.user_id == user_id).first()
+    user_by_id = db.query(User).filter(cast(User.user_id, Integer) == user_id).first()
 
     return user_by_id
 
@@ -34,7 +35,7 @@ def create_new_user(db: Session, user: UserCreate):
 
 
 def delete_user(db: Session, user_id: int):
-    deleted_user = db.query(User).filter(User.user_id == user_id).first()
+    deleted_user = db.query(User).filter(cast(User.user_id, Integer) == user_id).first()
     db.delete(deleted_user)
     db.commit()
     db.close()

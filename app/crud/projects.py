@@ -1,3 +1,4 @@
+from sqlalchemy import Integer, cast
 from sqlalchemy.orm import Session
 
 from app.models.models import Project as ProjectModel
@@ -12,7 +13,9 @@ def get_all_project_list(db: Session, skip: int = 0, limit: int = 100):
 
 def get_project_by_id(db: Session, project_id: int):
     project = (
-        db.query(ProjectModel).filter(ProjectModel.project_id == project_id).first()
+        db.query(ProjectModel)
+        .filter(cast(ProjectModel.project_id, Integer) == project_id)
+        .first()
     )
     return project
 
@@ -27,7 +30,9 @@ def create_project(db: Session, new_project: ProjectCreate, user_id: int):
 
 def delete_project(db: Session, project_id: int):
     project_to_delete = (
-        db.query(ProjectModel).filter(ProjectModel.project_id == project_id).first()
+        db.query(ProjectModel)
+        .filter(cast(ProjectModel.project_id, Integer) == project_id)
+        .first()
     )
     db.delete(project_to_delete)
     db.commit()
@@ -51,7 +56,7 @@ def show_collaborators(db: Session, project_id: int):
     users = (
         db.query(User)
         .join(ProjectModel)
-        .filter(ProjectModel.project_id == project_id)
+        .filter(cast(ProjectModel.project_id, Integer) == project_id)
         .all()
     )
     collaborators = []
@@ -64,3 +69,6 @@ def show_collaborators(db: Session, project_id: int):
             )
         )
     return collaborators
+
+
+# TODO create a function to add collaborators to a project
