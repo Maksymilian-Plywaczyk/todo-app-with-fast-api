@@ -1,3 +1,4 @@
+from sqlalchemy import Integer, cast
 from sqlalchemy.orm import Session
 
 from app.models.models import Section as SectionModel
@@ -6,14 +7,18 @@ from app.schemas.section import SectionCreate, SectionUpdate
 
 def get_single_section(db: Session, section_id: int):
     section = (
-        db.query(SectionModel).filter(SectionModel.section_id == section_id).first()
+        db.query(SectionModel)
+        .filter(cast(SectionModel.section_id, Integer) == section_id)
+        .first()
     )
     return section
 
 
 def get_all_user_section(db: Session, user_id: int):
     user_sections = (
-        db.query(SectionModel).filter(SectionModel.owner_id == user_id).all()
+        db.query(SectionModel)
+        .filter(cast(SectionModel.owner_id, Integer) == user_id)
+        .all()
     )
     return user_sections
 
@@ -32,7 +37,9 @@ def create_section(
 
 def delete_section(db: Session, section_id: int):
     deleted_section = (
-        db.query(SectionModel).filter(SectionModel.section_id == section_id).first()
+        db.query(SectionModel)
+        .filter(cast(SectionModel.section_id, Integer) == section_id)
+        .first()
     )
     db.delete(deleted_section)
     db.commit()

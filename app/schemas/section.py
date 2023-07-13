@@ -21,3 +21,6 @@ class Section(SectionBase):
     section_id: int
     project_id: int
     owner_id: int
+
+    class Config:
+        orm_mode = True
