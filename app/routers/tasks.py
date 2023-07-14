@@ -23,9 +23,6 @@ from app.schemas.users import User
 router = APIRouter(prefix=APIPrefixes.tasks, tags=[Tags.tasks])
 
 
-# TODO make routers for task
-
-
 @router.get(
     "/user/{user_id}/tasks/",
     summary="Get all tasks from current user",
