@@ -16,7 +16,19 @@ jobs:
     strategy:
       matrix: 
         python-version: ["3.9"]
-        
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          SQLALCHEMY_DATABASE_TEST_URL: ${{ secrets.SQLALCHEMY_DATABASE_TEST_URL }}
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --healt-interval 10s --health-timeout 5s --health-retries
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
@@ -37,12 +49,5 @@ jobs:
       with:
         requirementsFiles: "requirements.txt requirements-test.txt"
     - name: Test with pytest
-      env:
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-        POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-        SQLALCHEMY_DATABASE_TEST_URL: ${{ secrets.SQLALCHEMY_DATABASE_TEST_URL }}
       run: |
         pytest
