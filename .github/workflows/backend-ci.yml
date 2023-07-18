@@ -58,6 +58,3 @@ jobs:
       run: |
         pytest
         
-    - name: Stop and remove PostgreSQL container
-      if: always()
-      run: docker-compose down
