@@ -2,7 +2,8 @@ import pytest
 from fastapi.testclient import TestClient
 
 
-# TODO add tests using database
+# TODO make a pytest fixture with will return bearer token
+#  for endpoints which need authorization
 @pytest.mark.unit
 def test_login(client: TestClient) -> None:
     headers = {"Content-Type": "application/x-www-form-urlencoded"}

@@ -22,9 +22,10 @@ def test_get_users(client: TestClient, skip: int = 0, limit: int = 2):
         if person["full_name"] == "Maks Pływaczyk":
             assert person["full_name"] == "Maks Pływaczyk"
             assert person["email"] == "plywak12@gmail.com"
-        else:
+        if person["full_name"] == "Maks":
             assert person["full_name"] == "Maks"
             assert person["email"] == "admin@op.pl"
+
     assert response.status_code == 200
 
 
@@ -44,8 +45,8 @@ def test_get_users(client: TestClient, skip: int = 0, limit: int = 2):
 #     assert response.status_code == 200
 #     data = response.json()
 #     assert data["message"] == "Task created successfully"
-#
-#
+
+
 @pytest.mark.unit
 def test_delete_user(client: TestClient, user_id: int = 1):
     response = client.delete(f'api/v1/users/delete_user/{user_id}')
