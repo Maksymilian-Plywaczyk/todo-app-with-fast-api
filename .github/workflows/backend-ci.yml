@@ -16,6 +16,17 @@ jobs:
     strategy:
       matrix: 
         python-version: ["3.9"]
+    services:
+      # Define the PostgreSQL service using the official PostgreSQL Docker image
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
@@ -40,9 +51,13 @@ jobs:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
           SQLALCHEMY_DATABASE_TEST_URL: ${{ secrets.SQLALCHEMY_DATABASE_TEST_URL }}
           POSTGRES_DATABASE_URL: "postgresql://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@${{ secrets.POSTGRES_HOST }}:${{ secrets.POSTGRES_PORT }}/${{ secrets.POSTGRES_DB }}"
       run: |
         pytest
+        
+    - name: Stop and remove PostgreSQL container
+      if: always()
+      run: docker-compose down
