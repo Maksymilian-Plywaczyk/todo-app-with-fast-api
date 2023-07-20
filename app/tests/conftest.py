@@ -65,6 +65,9 @@ def new_user(db_session):
     create_new_user(
         db=db_session,
         user=UserCreate(
-            full_name="Maks Pływaczyk", email="plywak12@gmail.com", password="haslo123"
+            full_name="Maks Pływaczyk",
+            email="plywak12@gmail.com",
+            password="haslo123",
+            is_active=True,
         ),
     )
