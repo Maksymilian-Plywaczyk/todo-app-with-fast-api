@@ -8,7 +8,7 @@ from app.schemas.users import UserCreate
 class TestLogin:
     # TODO fix error with inactive user
     @pytest.fixture(scope="session", autouse=True)
-    def new_in_active_user(self, db_session):
+    def new_inactive_user(self, db_session):
         create_new_user(
             db=db_session,
             user=UserCreate(
@@ -92,6 +92,5 @@ class TestLogin:
         request_body = {"token": get_bearer_token, "new_password": "haslo1234"}
         response = client.post(url="api/v1/reset-password/", json=request_body)
         response_data = response.json()
-        print(response_data)
         assert response.status_code == 200
         assert response_data["message"] == "Password updated successfully"
