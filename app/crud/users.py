@@ -26,7 +26,10 @@ def get_user_list(db: Session, skip: int = 0, limit: int = 100):
 def create_new_user(db: Session, user: UserCreate):
     hashed_password = get_hashed_password(plain_password=user.password)
     database_user = User(
-        full_name=user.full_name, email=user.email, hashed_password=hashed_password
+        full_name=user.full_name,
+        email=user.email,
+        hashed_password=hashed_password,
+        is_active=user.is_active,
     )
     db.add(database_user)
     db.commit()

@@ -54,7 +54,7 @@ def reset_user_password(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
-    elif not user_is_active(user):
+    if not user_is_active(user):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="User is not active."
         )

@@ -18,6 +18,7 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     email: EmailStr = Field(..., description="Email must be provided")
     password: str
+    is_active: bool = Field(default=True, description="User's status")
 
 
 class UserInDB(UserBase):
