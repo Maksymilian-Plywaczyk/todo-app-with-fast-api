@@ -65,7 +65,6 @@ class TestUser:
     def test_get_users(self, client: TestClient, skip: int = 0, limit: int = 2):
         response = client.get(f"api/v1/users?skip={skip}&limit={limit}")
         data = response.json()
-        print(data)
         for person in data:
             if person["full_name"] == "Maks Pływaczyk":
                 assert person["full_name"] == "Maks Pływaczyk"
