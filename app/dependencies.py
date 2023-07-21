@@ -7,7 +7,7 @@ from jose import jwt
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
-from app.core.security import ALGORITH, SECRET_KEY
+from app.core.security import ALGORITHM, SECRET_KEY
 from app.crud.users import get_user_by_email
 from app.db.database import SessionLocal
 from app.schemas.token import TokenPayload
@@ -28,7 +28,7 @@ def get_current_user(
     token: str = Depends(reuseable_oauth), db: Session = Depends(get_db)
 ):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITH])
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         token_data = TokenPayload(**payload)
         if datetime.fromtimestamp(token_data.exp) < datetime.now():
             raise HTTPException(

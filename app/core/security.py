@@ -12,7 +12,7 @@ load_dotenv(find_dotenv())
 # get secret key from environment variables should be kept secret
 SECRET_KEY = os.getenv("SECRET_KEY")
 
-ALGORITH = "HS256"
+ALGORITHM = "HS256"
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -41,7 +41,7 @@ def create_access_token(
         )
 
     to_encode = {"exp": expires_delta, "subject": str(subject)}
-    encoded_jwt = jwt.encode(claims=to_encode, key=SECRET_KEY, algorithm=ALGORITH)
+    encoded_jwt = jwt.encode(claims=to_encode, key=SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 
@@ -51,13 +51,13 @@ def generate_reset_password_token(email: str) -> str:
     expires = delta + now
     exp = expires.timestamp()
     to_encode = {"exp": exp, "subject": email}
-    encoded_jwt = jwt.encode(claims=to_encode, key=SECRET_KEY, algorithm=ALGORITH)
+    encoded_jwt = jwt.encode(claims=to_encode, key=SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 
 def verify_reset_password_token(token: str) -> Optional[str]:
     try:
-        decoded_token = jwt.decode(token, key=SECRET_KEY, algorithms=[ALGORITH])
+        decoded_token = jwt.decode(token, key=SECRET_KEY, algorithms=[ALGORITHM])
         return decoded_token["subject"]
     except jwt.JWTError:
         return None
