@@ -54,7 +54,7 @@ class SectionFactory(SQLAlchemyModelFactory):
     order = factory.Faker('random_int')
     name = Faker().sentence(nb_words=1)
     owner_id = UserFactory.user_id
-    owner = factory.SubFactory(UserFactory)
+    project = factory.SubFactory(ProjectFactory)
 
 
 class TaskFactory(SQLAlchemyModelFactory):
@@ -74,4 +74,4 @@ class TaskFactory(SQLAlchemyModelFactory):
     user_id = UserFactory.user_id
     project_id = ProjectFactory.project_id
     section_id = SectionFactory.section_id
-    owner = factory.SubFactory(UserFactory)
+    section = factory.SubFactory(SectionFactory)

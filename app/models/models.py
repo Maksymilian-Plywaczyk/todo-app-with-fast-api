@@ -17,6 +17,7 @@ class Project(Base):
     is_favorite = Column(Boolean, default=False)
     user_id = Column(Integer, ForeignKey("user.user_id"))
     owner = relationship("User", back_populates="projects")
+    sections = relationship("Section", back_populates="project")
 
 
 class User(Base):
@@ -25,9 +26,7 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String)
     is_active = Column(Boolean)
-    tasks = relationship("Task", back_populates="owner")
     projects = relationship("Project", back_populates="owner")
-    sections = relationship("Section", back_populates="owner")
 
 
 class Task(Base):
@@ -43,7 +42,7 @@ class Task(Base):
     user_id = Column(Integer, ForeignKey("user.user_id"))
     project_id = Column(Integer, ForeignKey("project.project_id"))
     section_id = Column(Integer, ForeignKey("section.section_id"))
-    owner = relationship("User", back_populates="tasks")
+    section = relationship("Section", back_populates="tasks")
 
 
 class Section(Base):
@@ -52,4 +51,5 @@ class Section(Base):
     order = Column(Integer)
     name = Column(String, nullable=False)
     owner_id = Column(Integer, ForeignKey("user.user_id"))
-    owner = relationship("User", back_populates="sections")
+    project = relationship("Project", back_populates="sections")
+    tasks = relationship("Task", back_populates="section")

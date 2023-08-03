@@ -1,6 +1,8 @@
-from typing import Union
+from typing import List, Union
 
 from pydantic import BaseModel, Field
+
+from app.schemas.section import Section
 
 
 class ProjectBase(BaseModel):
@@ -24,6 +26,7 @@ class ProjectUpdate(ProjectBase):
 class Project(ProjectBase):
     project_id: int
     user_id: int
+    sections: List[Section] = Field(default=[], description="User's sections")
 
     class Config:
         orm_mode = True

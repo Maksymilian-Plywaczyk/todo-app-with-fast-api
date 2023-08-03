@@ -32,7 +32,6 @@ class TaskUpdate(BaseTask):
     pass
 
 
-# Properties to receive via API on update
 class TaskCreate(BaseTask):
     pass
 

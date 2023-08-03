@@ -1,6 +1,8 @@
-from typing import Union
+from typing import List, Union
 
 from pydantic import BaseModel, Field
+
+from app.schemas.tasks import Task
 
 
 class SectionBase(BaseModel):
@@ -21,6 +23,7 @@ class Section(SectionBase):
     section_id: int
     project_id: int
     owner_id: int
+    tasks: List[Task] = Field(default=[], description="User's tasks")
 
     class Config:
         orm_mode = True
