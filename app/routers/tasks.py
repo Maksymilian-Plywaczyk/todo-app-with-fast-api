@@ -7,6 +7,7 @@ from app.crud.tasks import (
     create_task,
     delete_task,
     get_active_task,
+    get_latest_task,
     get_task_by_id,
     get_tasks_list,
     mark_task_as_completed,
@@ -39,7 +40,7 @@ def read_user_tasks(
     return get_tasks_list(db=db, skip=skip, limit=limit)
 
 
-@router.get("/show_task/", summary="Get task by id", response_model=Task)
+@router.get("/show_task", summary="Get task by id", response_model=Task)
 def read_task_by_id(task_id: int, db: Session = Depends(get_db)):
     task = get_task_by_id(db=db, task_id=task_id)
     if task is None:
@@ -80,13 +81,19 @@ def create_new_task(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="User not found"
         )
-
+    latest_task = get_latest_task(db=db, user_id=user_id)
+    if latest_task is None:
+        latest_id = 0
+    else:
+        latest_id = latest_task.id + 1
+    url = f"https://localhost:8000/api/v1/tasks/show_task?id={latest_id}"
     create_task(
         db=db,
         newTask=new_task,
         user_id=user_id,
         project_id=project_id,
         section_id=section_id,
+        url=url,
     )
     return {"message": "Task created successfully"}
 

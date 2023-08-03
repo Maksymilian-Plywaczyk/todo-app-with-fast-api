@@ -26,10 +26,26 @@ def get_active_task(db: Session, task_id: int):
     return active_task
 
 
+def get_latest_task(db: Session, user_id: int):
+    latest_task = (
+        db.query(Task)
+        .filter(and_(Task.user_id == user_id, Task.is_completed.is_(False)))
+        .order_by(Task.id.desc())
+        .first()
+    )
+    return latest_task
+
+
 # Create new task for selected user
-def create_task(db: Session, newTask: TaskCreate, user_id: int, project_id, section_id):
+def create_task(
+    db: Session, newTask: TaskCreate, user_id: int, project_id, section_id, url: str
+):
     database_task = Task(
-        **newTask.dict(), user_id=user_id, project_id=project_id, section_id=section_id
+        **newTask.dict(),
+        user_id=user_id,
+        project_id=project_id,
+        section_id=section_id,
+        url=url
     )
     db.add(database_task)
     db.commit()
