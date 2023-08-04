@@ -67,7 +67,7 @@ def show_active_task(
     return active_task
 
 
-@router.post("/create_task", summary="Create new task for user", response_model=Msg)
+@router.post("/create_task", summary="Create new task for user", response_model=Task)
 def create_new_task(
     new_task: TaskCreate,
     project_id: int,
@@ -87,7 +87,7 @@ def create_new_task(
     else:
         latest_id = latest_task.id + 1
     url = f"https://localhost:8000/api/v1/tasks/show_task?id={latest_id}"
-    create_task(
+    created_task = create_task(
         db=db,
         newTask=new_task,
         user_id=user_id,
@@ -95,12 +95,12 @@ def create_new_task(
         section_id=section_id,
         url=url,
     )
-    return {"message": "Task created successfully"}
+    return created_task
 
 
 @router.delete(
     "/users/{user_id}/tasks/{task_id}",
-    response_model=Msg,
+    response_model=Task,
     summary="Delete user task by id",
 )
 def delete_user_task(user_id: int, task_id: int, db: Session = Depends(get_db)):
@@ -113,8 +113,8 @@ def delete_user_task(user_id: int, task_id: int, db: Session = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Task not found"
         )
-    delete_task(db=db, task_id=task_id)
-    return {"message": "Task deleted successfully"}
+    deleted_task = delete_task(db=db, task_id=task_id)
+    return deleted_task
 
 
 @router.put("/users/{user_id}/tasks/{task_id}", response_model=Msg)
