@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy import Integer, and_, cast
 from sqlalchemy.orm import Session
@@ -38,14 +40,22 @@ def get_latest_task(db: Session, user_id: int):
 
 # Create new task for selected user
 def create_task(
-    db: Session, newTask: TaskCreate, user_id: int, project_id, section_id, url: str
+    db: Session,
+    newTask: TaskCreate,
+    user_id: int,
+    project_id,
+    section_id,
+    url: str,
+    due_date: datetime,
 ):
+    filtered_dict = {k: v for k, v in newTask.dict().items() if k != "due_string"}
     database_task = Task(
-        **newTask.dict(),
+        **filtered_dict,
         user_id=user_id,
         project_id=project_id,
         section_id=section_id,
-        url=url
+        url=url,
+        due_date=due_date,
     )
     db.add(database_task)
     db.commit()

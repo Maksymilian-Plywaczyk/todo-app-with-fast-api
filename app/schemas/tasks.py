@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 from typing import Union
 
 from pydantic import AnyHttpUrl, BaseModel, Field
@@ -32,7 +32,7 @@ class TaskUpdate(BaseTask):
 
 
 class TaskCreate(BaseTask):
-    pass
+    due_string: Union[str, None] = None
 
 
 class Task(BaseTask):
@@ -41,6 +41,7 @@ class Task(BaseTask):
     project_id: int
     section_id: int
     url: Union[AnyHttpUrl, None] = Field(description="Url for task")
+    due_date: Union[datetime, None] = Field(description="Due date for task")
 
     class Config:
         orm_mode = True

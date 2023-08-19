@@ -14,6 +14,7 @@ from app.crud.tasks import (
     update_task,
 )
 from app.crud.users import get_user_by_id
+from app.crud.utils.dates import convert_human_read_date_to_datetime
 from app.dependencies import get_current_user, get_db
 from app.routers.utils.prefixes import APIPrefixes
 from app.routers.utils.tags import Tags
@@ -87,6 +88,9 @@ def create_new_task(
     else:
         latest_id = latest_task.id + 1
     url = f"https://localhost:8000/api/v1/tasks/show_task?id={latest_id}"
+    due_date = convert_human_read_date_to_datetime(new_task.due_string)
+    print("DATE: ", due_date)
+    print("TYPE: ", type(due_date))
     created_task = create_task(
         db=db,
         newTask=new_task,
@@ -94,6 +98,7 @@ def create_new_task(
         project_id=project_id,
         section_id=section_id,
         url=url,
+        due_date=due_date,
     )
     return created_task
 

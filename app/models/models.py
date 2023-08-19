@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import Boolean, Column, Date, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, Date, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from app.db.database import Base
@@ -37,7 +37,8 @@ class Task(Base):
     create_at = Column(Date, default=get_time)
     comment_count = Column(Integer, default=0)
     url = Column(String, index=True)
-    finished_at = Column(Date, default=get_time)
+    due_date = Column(DateTime, default=None)
+    finished_at = Column(Date, default=None)
     is_completed = Column(Boolean, default=False, nullable=False)
     user_id = Column(Integer, ForeignKey("user.user_id"))
     project_id = Column(Integer, ForeignKey("project.project_id"))
