@@ -1,3 +1,6 @@
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/pre-commit/pre-commit-hooks/main.svg)](https://results.pre-commit.ci/latest/github/pre-commit/pre-commit-hooks/main)
+
+
 # TODO API USING FASTAPI
 
 This project use FastAPI to create API for TODO list. The aim of the project is to learn about the FASTAPI framework and create a CRUD application to manage the TODO list. Among other things, the project includes user authentication. 
