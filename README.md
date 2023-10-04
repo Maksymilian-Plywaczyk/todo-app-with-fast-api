@@ -1,5 +1,5 @@
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/pre-commit/pre-commit-hooks/main.svg)](https://results.pre-commit.ci/latest/github/pre-commit/pre-commit-hooks/main)
-
+![workflow status](https://github.com/Maksymilian-Plywaczyk/todo-app-with-fast-api/actions/workflows/backend-ci.yml/badge.svg)
 
 # TODO API USING FASTAPI
 
