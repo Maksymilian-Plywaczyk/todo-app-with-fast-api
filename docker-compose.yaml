@@ -37,3 +37,5 @@ services:
         condition: service_healthy
     volumes:
       - .:/todo_api
+      - ./app/alembic:/todo_api/alembic
+      - ./app/alembic.ini:/todo_api/alembic.ini

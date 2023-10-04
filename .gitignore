@@ -129,7 +129,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+/app/alembic/versions/*.py
 database/
 # Spyder project settings
 .spyderproject
